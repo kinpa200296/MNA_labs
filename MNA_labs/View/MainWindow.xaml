@@ -1,0 +1,78 @@
+﻿<Window x:Class="MNA_labs.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm ="clr-namespace:MNA_labs.ViewModel"
+        Title="MNA Labs" Height="500" Width="600">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Выберите действие:" Margin="5"
+                   Grid.Row="0" Grid.Column="0"/>
+        <RadioButton Content="Метод Гаусса" Margin="5" 
+                     Grid.Row="1" Grid.Column="0" IsChecked="True"
+                     Command="{Binding GaussMethodChoosen}"/>
+        <RadioButton Content="Метод Гаусса с выбором главного элемента" Margin="5" 
+                     Grid.Row="2" Grid.Column="0" 
+                     Command="{Binding GaussWithSelectionMethodChoosen}"/>
+        <RadioButton Content="Метод простых итераций" Margin="5" 
+                     Grid.Row="3" Grid.Column="0" 
+                     Command="{Binding SimpleIterationsMethodChoosen}"/>
+        <RadioButton Content="Метод Зейделя" Margin="5" 
+                     Grid.Row="4" Grid.Column="0" 
+                     Command="{Binding ZeidelMethodChoosen}"/>
+        <TextBlock Text="Выберите путь к входному файлу:"
+                 Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <TextBlock Text="Выберите путь к выходному файлу:"
+                 Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <Button Content="Выполнить" Margin="5"
+                Grid.Row="4" Grid.Column="1"
+                Command="{Binding DoAction}"/>
+        <DockPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <Button Content="Выбрать файл" DockPanel.Dock="Right"
+                    Command="{Binding OpenFileDialog}"/>
+            <TextBox DockPanel.Dock="Left" TextWrapping="Wrap" 
+                     ToolTip="Входной файл">
+                <TextBox.Text>
+                    <Binding Path="InputFile" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vm:FileNameValidationRule ShouldExist="True"
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Grid.Column="1" Margin="5">
+            <Button Content="Выбрать файл" DockPanel.Dock="Right"
+                    Command="{Binding SaveFileDialog}"/>
+            <TextBox DockPanel.Dock="Left"
+                     TextWrapping="Wrap" ToolTip="Выходной файл">
+                <TextBox.Text>
+                    <Binding Path="OutputFile" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vm:FileNameValidationRule ShouldExist="False" 
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </DockPanel>
+        <ListBox Margin="5" Grid.Row="5" Grid.Column="0"
+                 Grid.ColumnSpan="2" ItemsSource="{Binding Log}"/>
+    </Grid>
+</Window>

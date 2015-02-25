@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MathBase
 {
-    public class IntMatrix : Matrix<int>
+    public class IntMatrix : Matrix<int>, IEnumerable<IntVector>
     {
         public IntMatrix()
         {
@@ -95,26 +98,28 @@ namespace MathBase
             {
                 throw new ArgumentException("Matrix size doesn't match. Cannot sum.");
             }
-            for (var i = 0; i < matrix1.RowCount; i++)
-                for (var j = 0; j < matrix2.ColumnCount; j++)
+            var matrix = new IntMatrix(matrix1.RowCount, matrix1.ColumnCount);
+            for (var i = 0; i < matrix.RowCount; i++)
+                for (var j = 0; j < matrix.ColumnCount; j++)
                 {
-                    matrix1[i, j] += matrix2[i, j];
+                    matrix[i, j] = matrix1[i, j] + matrix2[i, j];
                 }
-            return matrix1;
+            return matrix;
         }
 
         public static IntMatrix operator -(IntMatrix matrix1, IntMatrix matrix2)
         {
             if (matrix1.RowCount != matrix2.RowCount || matrix1.ColumnCount != matrix2.ColumnCount)
             {
-                throw new ArgumentException("Matrix size doesn't match. Cannot deduct.");
+                throw new ArgumentException("Matrix size doesn't match. Cannot sum.");
             }
-            for (var i = 0; i < matrix1.RowCount; i++)
-                for (var j = 0; j < matrix2.ColumnCount; j++)
+            var matrix = new IntMatrix(matrix1.RowCount, matrix1.ColumnCount);
+            for (var i = 0; i < matrix.RowCount; i++)
+                for (var j = 0; j < matrix.ColumnCount; j++)
                 {
-                    matrix1[i, j] -= matrix2[i, j];
+                    matrix[i, j] = matrix1[i, j] - matrix2[i, j];
                 }
-            return matrix1;
+            return matrix;
         }
 
         public static IntMatrix operator *(IntMatrix matrix1, IntMatrix matrix2)
@@ -132,74 +137,149 @@ namespace MathBase
             return matrix;
         }
 
+        public static IntVector operator *(IntMatrix matrix, IntVector vector)
+        {
+            if (matrix.ColumnCount != vector.Length)
+            {
+                throw new ArgumentException("Matrix and vector are inconsistent. Cannot multiply.");
+            }
+            return new IntVector(matrix.Select(v => v*vector));
+        }
+
+        public static IntVector operator *(IntVector vector, IntMatrix matrix)
+        {
+            return matrix*vector;
+        }
+
+
         public static IntMatrix operator +(IntMatrix matrix, int val)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
+            var result = new IntMatrix(matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < result.RowCount; i++)
+                for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    matrix[i, j] += val;
+                    result[i, j] = matrix[i, j] + val;
                 }
-            return matrix;            
+            return result;            
         }
 
         public static IntMatrix operator +(int val, IntMatrix matrix)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
-                {
-                    matrix[i, j] += val;
-                }
-            return matrix;
+            return matrix + val;
         }
 
         public static IntMatrix operator -(IntMatrix matrix, int val)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
+            var result = new IntMatrix(matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < result.RowCount; i++)
+                for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    matrix[i, j] -= val;
+                    result[i, j] = matrix[i, j] - val;
                 }
-            return matrix;
+            return result;
         }
 
         public static IntMatrix operator -(int val, IntMatrix matrix)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
+            var result = new IntMatrix(matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < result.RowCount; i++)
+                for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    matrix[i, j] = val - matrix[i,j];
+                    result[i, j] = val - matrix[i, j];
                 }
-            return matrix;
+            return result;
         }
 
         public static IntMatrix operator *(IntMatrix matrix, int val)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
+            var result = new IntMatrix(matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < result.RowCount; i++)
+                for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    matrix[i, j] *= val;
+                    result[i, j] = matrix[i, j] * val;
                 }
-            return matrix;
+            return result;
         }
 
         public static IntMatrix operator *(int val,IntMatrix matrix)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
-                {
-                    matrix[i, j] += val;
-                }
-            return matrix;
+            return matrix*val;
         }
 
         public static IntMatrix operator /(IntMatrix matrix, int val)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
-                for (var j = 0; j < matrix.ColumnCount; j++)
+            var result = new IntMatrix(matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < result.RowCount; i++)
+                for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    matrix[i, j] /= val;
+                    result[i, j] = matrix[i, j]/val;
                 }
-            return matrix;
+            return result;
+        }
+
+        public IEnumerator<IntVector> GetEnumerator()
+        {
+            return new HorizontalVectorEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private class HorizontalVectorEnumerator : IEnumerator<IntVector>
+        {
+            private int _index = -1;
+            private IntMatrix _matrix;
+
+            public HorizontalVectorEnumerator(IntMatrix matrix)
+            {
+                _matrix = matrix;
+            }
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                _index++;
+                return _index < _matrix.RowCount;
+            }
+
+            public void Reset()
+            {
+                _index = -1;
+            }
+
+            public IntVector Current { get { return _matrix.GetHorizontalVector(_index); } }
+
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
+        }
+
+        public int CubicNorm()
+        {
+            return this.Select(vector => vector.Select(val => Math.Abs(val)).Sum()).Max();
+        }
+
+        public int PseudoEuclidNorm()
+        {
+            return this.Select(vector => vector.Select(val => val*val).Sum()).Sum();
+        }
+
+        public int TetrahedralNorm()
+        {
+            var result = 0;
+            for (var j = 0; j < ColumnCount; j++)
+            {
+                var temp = GetVerticalVector(j).Select(val => Math.Abs(val)).Sum();
+                if (temp > result)
+                {
+                    result = temp;
+                }
+            }
+            return result;
         }
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MathBase
 {
     public abstract class Vector<T> : IEnumerable<T>
     {
-        protected T[] _data = new T[10];
+        protected T[] Data = new T[10];
 
         public int Length
         {
-            get { return _data.Length; }
+            get { return Data.Length; }
         }
 
         public T this[int index]
@@ -22,7 +21,7 @@ namespace MathBase
                 {
                     throw new IndexOutOfRangeException("Vector index is out of range");
                 }
-                return _data[index];
+                return Data[index];
             }
             set
             {
@@ -30,7 +29,7 @@ namespace MathBase
                 {
                     throw new IndexOutOfRangeException("Vector index is out of range");
                 }
-                _data[index] = value;
+                Data[index] = value;
             }
         }
 
@@ -70,7 +69,7 @@ namespace MathBase
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new VectorEnumerator(_data);
+            return new VectorEnumerator(Data);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

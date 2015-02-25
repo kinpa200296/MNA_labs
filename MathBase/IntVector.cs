@@ -13,18 +13,18 @@ namespace MathBase
 
         public IntVector(int length)
         {
-            _data = new int[length];
+            Data = new int[length];
         }
 
         public IntVector(IEnumerable<int> data)
         {
-            _data = data.ToArray();
+            Data = data.ToArray();
         }
 
         public IntVector(int[] data)
         {
-            _data = new int[data.Length];
-            data.CopyTo(_data, 0);
+            Data = new int[data.Length];
+            data.CopyTo(Data, 0);
         }
 
         public static IntVector operator +(IntVector vector1, IntVector vector2)

@@ -6,7 +6,7 @@ namespace Kindruk.lab1
 {
     public static class SlaeSolver
     {
-        public const double Epsilon = 1e-9;
+        public const double Epsilon = 1e-6;
 
         public enum SolutionStatus
         {
@@ -24,8 +24,12 @@ namespace Kindruk.lab1
                     for (k = i + 1; k < matrix.RowCount && Math.Abs(matrix[k, i]) < Epsilon; k++) { }
                     if (k == matrix.RowCount)
                     {
+                        for (var k1 = i - 1; k1 >= 0; k1--)
+                        {
+                            answers[k1] = (values[k1] - matrix[k1] * answers) / matrix[k1, k1];
+                        }
                         for (var k1 = 0; k1 < matrix.RowCount; k1++)
-                            if (!matrix[k1].Any(val => val > Epsilon) && values[k1] > Epsilon)
+                            if (Math.Abs(matrix[k1] * answers - values[k1]) > Epsilon)
                             {
                                 return SolutionStatus.NoSolution;
                             }
@@ -41,14 +45,16 @@ namespace Kindruk.lab1
                     values[j] -= values[i] * matrix[j, i] / vector[i];
                     matrix[j] -= vector*matrix[j, i]/vector[i];
                 }
-                if (!matrix[i].Any(val => val > Epsilon) && values[i] > Epsilon)
-                {
-                    return SolutionStatus.NoSolution;
-                }
             }
             for (var i = matrix.RowCount - 1; i >= 0; i--)
             {
                 answers[i] = (values[i] - matrix[i]*answers) / matrix[i,i];
+            }
+            var ans = answers;
+            if ((new DoubleVector(matrix.Select(vector => vector * ans)) - values).Select(val => Math.Abs(val)).Max() >
+                Epsilon)
+            {
+                return SolutionStatus.NoSolution;
             }
             return SolutionStatus.Solved;
         }
@@ -68,8 +74,12 @@ namespace Kindruk.lab1
                 }
                 if (Math.Abs(matrix[num, i]) < Epsilon)
                 {
+                    for (var k1 = i - 1; k1 >= 0; k1--)
+                    {
+                        answers[k1] = (values[k1] - matrix[k1] * answers) / matrix[k1, k1];
+                    }
                     for (var k1 = 0; k1 < matrix.RowCount; k1++)
-                        if (!matrix[k1].Any(val => val > Epsilon) && values[k1] > Epsilon)
+                        if (Math.Abs(matrix[k1] * answers - values[k1]) > Epsilon)
                         {
                             return SolutionStatus.NoSolution;
                         }
@@ -87,14 +97,16 @@ namespace Kindruk.lab1
                     values[j] -= values[i] * matrix[j, i] / vector[i];
                     matrix[j] -= vector * matrix[j, i] / vector[i];
                 }
-                if (!matrix[i].Any(val => val > Epsilon) && values[i] > Epsilon)
-                {
-                    return SolutionStatus.NoSolution;
-                }
             }
             for (var i = matrix.RowCount - 1; i >= 0; i--)
             {
                 answers[i] = (values[i] - matrix[i] * answers) / matrix[i, i];
+            }
+            var ans = answers;
+            if ((new DoubleVector(matrix.Select(vector => vector * ans)) - values).Select(val => Math.Abs(val)).Max() >
+                Epsilon)
+            {
+                return SolutionStatus.NoSolution;
             }
             return SolutionStatus.Solved;
         }

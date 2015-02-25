@@ -13,18 +13,18 @@ namespace MathBase
 
         public DoubleVector(int length)
         {
-            _data = new double[length];
+            Data = new double[length];
         }
 
         public DoubleVector(IEnumerable<double> data)
         {
-            _data = data.ToArray();
+            Data = data.ToArray();
         }
 
         public DoubleVector(double[] data)
         {
-            _data = new double[data.Length];
-            data.CopyTo(_data, 0);
+            Data = new double[data.Length];
+            data.CopyTo(Data, 0);
         }
 
         public static DoubleVector operator +(DoubleVector vector1, DoubleVector vector2)

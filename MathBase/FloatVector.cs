@@ -13,18 +13,18 @@ namespace MathBase
 
         public FloatVector(int length)
         {
-            _data = new float[length];
+            Data = new float[length];
         }
 
         public FloatVector(IEnumerable<float> data)
         {
-            _data = data.ToArray();
+            Data = data.ToArray();
         }
 
         public FloatVector(float[] data)
         {
-            _data = new float[data.Length];
-            data.CopyTo(_data, 0);
+            Data = new float[data.Length];
+            data.CopyTo(Data, 0);
         }
 
         public static FloatVector operator +(FloatVector vector1, FloatVector vector2)

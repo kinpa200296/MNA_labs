@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using Kindruk.lab1;
+using System.Linq;
 using MathBase;
 
 namespace test
@@ -12,25 +12,43 @@ namespace test
         {
             DoubleMatrix matrix;
             DoubleVector values;
-            /*var C = new DoubleMatrix(new double[,]
+            
+            //var C = new DoubleMatrix(new double[,]
+            //{
+            //    {0.2, 0, 0.2, 0, 0},
+            //    {0, 0.2, 0, 0.2, 0},
+            //    {0.2, 0, 0.2, 0, 0.2},
+            //    {0, 0.2, 0, 0.2, 0},
+            //    {0, 0, 0.2, 0, 0.2}
+            //});
+            var C = new DoubleMatrix(new double[,]
             {
-                {0.2, 0, 0.2, 0, 0},
-                {0, 0.2, 0, 0.2, 0},
-                {0.2, 0, 0.2, 0, 0.2},
-                {0, 0.2, 0, 0.2, 0},
-                {0, 0, 0.2, 0, 0.2}
+                {0.01, 0, -0.02, 0, 0},
+                {0.01, 0.01, -0.02, 0, 0},
+                {0, 0.01, 0.01, 0, -0.02},
+                {0, 0, 0.01, 0.01, 0},
+                {0, 0, 0, 0.01, 0.01}
             });
             var k = 9;
+            //var D = new DoubleMatrix(new double[,]
+            //{
+            //    {2.33, 0.81, 0.67, 0.92, -0.53},
+            //    {-0.53, 2.33, 0.81, 0.67, 0.92},
+            //    {0.92, -0.53, 2.33, 0.81, 0.67},
+            //    {0.67, 0.92, -0.53, 2.33, 0.81},
+            //    {0.81, 0.67, 0.92, -0.53, 2.33}
+            //});
             var D = new DoubleMatrix(new double[,]
             {
-                {2.33, 0.81, 0.67, 0.92, -0.53},
-                {-0.53, 2.33, 0.81, 0.67, 0.92},
-                {0.92, -0.53, 2.33, 0.81, 0.67},
-                {0.67, 0.92, -0.53, 2.33, 0.81},
-                {0.81, 0.67, 0.92, -0.53, 2.33}
+                {1.33, 0.21, 0.17, 0.12, -0.13},
+                {-0.13, -1.33, 0.11, 0.17, 0.12},
+                {0.12, -0.13, -1.33, 0.11, 0.17},
+                {0.17, 0.12, -0.13, -1.33, 0.11},
+                {0.11, 0.67, 0.12, -0.13, -1.33},
             });
             D += k*C;
-            var b = new DoubleVector(new double[] {4.2, 4.2, 4.2, 4.2, 4.2});
+            //var b = new DoubleVector(new double[] {4.2, 4.2, 4.2, 4.2, 4.2});
+            var b = new DoubleVector(new double[] { 1.2, 2.2, 4.0, 0.0, -1.2 });
             using (var file = File.Create(args[0]))
             {
                 using (var writer = new StreamWriter(file))
@@ -49,8 +67,8 @@ namespace test
                         writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
                     }
                 }
-            }*/
-            using (var file = File.OpenRead(args[0]))
+            }
+            /*using (var file = File.OpenRead(args[0]))
             {
                 using (var reader = new StreamReader(file))
                 {
@@ -73,7 +91,7 @@ namespace test
                         {
                             throw new FormatException("File format doesn't match");
                         }
-                        var c = s.Split(' ');
+                        var c = s.Split(' ').Where(str => !string.IsNullOrWhiteSpace(str)).ToArray();
                         if (c.Length != n)
                         {
                             throw new FormatException("File format doesn't match");
@@ -93,7 +111,7 @@ namespace test
                     {
                         throw new FormatException("File format doesn't match");
                     }
-                    var c1 = s.Split(' ');
+                    var c1 = s.Split(' ').Where(str => !string.IsNullOrWhiteSpace(str)).ToArray();
                     if (c1.Length != n)
                     {
                         throw new FormatException("File format doesn't match");
@@ -110,7 +128,7 @@ namespace test
                 }
             }
             DoubleVector ans;
-            var status = SlaeSolver.SolveGaussMethod(matrix, values, out ans);
+            var status = Kindruk.lab1.SlaeSolver.SolveGaussMethod(matrix, values, out ans);
             using (var file = File.Create(args[1]))
             {
                 using (var writer = new StreamWriter(file))
@@ -121,7 +139,7 @@ namespace test
                         writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
                     }
                 }
-            }
+            }*/
         }
     }
 }
