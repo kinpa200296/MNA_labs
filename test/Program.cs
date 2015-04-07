@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Kindruk.lab3;
+using Kindruk.lab4;
 using MathBase;
 
 namespace test
@@ -19,6 +20,11 @@ namespace test
             Console.WriteLine(NleSolver.FindRootChordsMethod(p, roots[1], 0.001));
             Console.WriteLine(NleSolver.FindRootNewtonMethod(p, roots[2]));
             Console.ReadKey();
+            var res = SnleSolver.SolveWithNewtonMethod(SnleSolver.F, SnleSolver.J);
+            foreach (var val in res)
+            {
+                Console.WriteLine(val);
+            }
             //DoubleMatrix matrix;
             //DoubleVector values;
 

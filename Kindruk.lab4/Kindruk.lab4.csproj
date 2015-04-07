@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{779D7329-54C3-40FB-AE4A-E2666B78E4BD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{F527D04E-2A3A-49D2-B26A-EDD0740439DD}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>test</RootNamespace>
-    <AssemblyName>test</AssemblyName>
+    <RootNamespace>Kindruk.lab4</RootNamespace>
+    <AssemblyName>Kindruk.lab4</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,29 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="SNLESolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kindruk.lab1\Kindruk.lab1.csproj">
-      <Project>{0e0445ee-23e0-458d-8570-ec20ae01de37}</Project>
-      <Name>Kindruk.lab1</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kindruk.lab2\Kindruk.lab2.csproj">
-      <Project>{0d2bf27b-a7c2-45eb-8b8f-bdfc5b10e106}</Project>
-      <Name>Kindruk.lab2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kindruk.lab3\Kindruk.lab3.csproj">
-      <Project>{b180ebc0-b953-4682-9ab3-8e89d1a7d3aa}</Project>
-      <Name>Kindruk.lab3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kindruk.lab4\Kindruk.lab4.csproj">
-      <Project>{f527d04e-2a3a-49d2-b26a-edd0740439dd}</Project>
-      <Name>Kindruk.lab4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MathBase\MathBase.csproj">
       <Project>{33be65e5-0cbf-4a46-af6b-9fe08a84685f}</Project>
       <Name>MathBase</Name>

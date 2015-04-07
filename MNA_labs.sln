@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MNA_labs", "MNA_labs\MNA_la
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kindruk.lab3", "Kindruk.lab3\Kindruk.lab3.csproj", "{B180EBC0-B953-4682-9AB3-8E89D1A7D3AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kindruk.lab4", "Kindruk.lab4\Kindruk.lab4.csproj", "{F527D04E-2A3A-49D2-B26A-EDD0740439DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B180EBC0-B953-4682-9AB3-8E89D1A7D3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B180EBC0-B953-4682-9AB3-8E89D1A7D3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B180EBC0-B953-4682-9AB3-8E89D1A7D3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F527D04E-2A3A-49D2-B26A-EDD0740439DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F527D04E-2A3A-49D2-B26A-EDD0740439DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F527D04E-2A3A-49D2-B26A-EDD0740439DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F527D04E-2A3A-49D2-B26A-EDD0740439DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
