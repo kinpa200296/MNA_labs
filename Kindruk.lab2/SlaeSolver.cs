@@ -17,9 +17,14 @@ namespace Kindruk.lab2
             out DoubleVector answers)
         {
             answers = new DoubleVector(values.Length);
-            var b = 1 - matrix;
+            for (var i = 0; i < matrix.RowCount; i++)
+            {
+                matrix[i] = matrix[i]/matrix[i, i];
+                matrix[i,i] = 0;
+            }
+            var b = (-1)*matrix;
             var c = values;
-            if (b.CubicNorm() < 1 || b.PseudoEuclidNorm() < 1 || b.TetrahedralNorm() < 1)
+            if (!(b.CubicNorm() < 1 || b.PseudoEuclidNorm() < 1 || b.TetrahedralNorm() < 1))
             {
                 return SolutionStatus.NoConvergence;
             }
@@ -49,11 +54,16 @@ namespace Kindruk.lab2
                 temp2 = temp2 &&
                         (2 * Math.Abs(matrix[j, j]) > matrix.GetVerticalVector(j).Select(val => Math.Abs(val)).Sum());
             }
-            if (!(temp1 && temp2))
+            if (!(temp1 || temp2))
             {
                 return SolutionStatus.NoConvergence;
             }
-            var b = 1 - matrix;
+            for (var i = 0; i < matrix.RowCount; i++)
+            {
+                matrix[i] = matrix[i]/matrix[i, i];
+                matrix[i, i] = 0;
+            }
+            var b = (-1)*matrix;
             var c = values;
             DoubleVector prevAns;
             var newAns = new DoubleVector(answers.Length);

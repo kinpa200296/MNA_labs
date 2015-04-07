@@ -166,7 +166,7 @@ namespace MNA_labs.ViewModel
                         break;
                 }
                 Log.Add(string.Format("{0} method result: {1}", ChoosenMethod, solutionResult));
-                using (var file = File.OpenWrite(OutputFile))
+                using (var file = File.Create(OutputFile))
                 {
                     using (var writer = new StreamWriter(file))
                     {
