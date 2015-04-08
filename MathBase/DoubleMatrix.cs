@@ -26,6 +26,26 @@ namespace MathBase
                 }
         }
 
+        public DoubleMatrix(IEnumerable<DoubleVector> data)
+        {
+            var vectors = data.ToArray();
+            _data = new double[vectors.Length, vectors[0].Length];
+            for (var i = 0; i < vectors.Length; i++)
+            {
+                this[i] = vectors[i];
+            }
+        }
+
+        public static DoubleMatrix One(int size)
+        {
+            var res = new DoubleMatrix(size, size);
+            for (var i = 0; i < size; i++)
+            {
+                res[i, i] = 1;
+            }
+            return res;
+        }
+
         public DoubleVector this[int rowNumber]
         {
             get { return GetHorizontalVector(rowNumber); }

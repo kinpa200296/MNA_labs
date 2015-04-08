@@ -26,6 +26,26 @@ namespace MathBase
                 }
         }
 
+        public IntMatrix(IEnumerable<IntVector> data)
+        {
+            var vectors = data.ToArray();
+            _data = new int[vectors.Length, vectors[0].Length];
+            for (var i = 0; i < vectors.Length; i++)
+            {
+                this[i] = vectors[i];
+            }
+        }
+
+        public static IntMatrix One(int size)
+        {
+            var res = new IntMatrix(size, size);
+            for (var i = 0; i < size; i++)
+            {
+                res[i, i] = 1;
+            }
+            return res;
+        }
+
         public IntVector this[int rowNumber]
         {
             get { return GetHorizontalVector(rowNumber); }

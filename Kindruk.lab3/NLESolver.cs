@@ -30,7 +30,7 @@ namespace Kindruk.lab3
             return ShturmNumber(p, a) - ShturmNumber(p, b);
         }
 
-        public static double[] FindRoutes(Polynom p,double a, double b, double stepSize)
+        public static double[] FindRoots(Polynom p,double a, double b, double stepSize)
         {
             var result = new List<double>();
             for (var x = a; b - x > Epsilon; x += stepSize)

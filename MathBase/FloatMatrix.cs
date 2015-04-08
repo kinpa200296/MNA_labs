@@ -26,6 +26,26 @@ namespace MathBase
                 }
         }
 
+        public FloatMatrix(IEnumerable<FloatVector> data)
+        {
+            var vectors = data.ToArray();
+            _data = new float[vectors.Length, vectors[0].Length];
+            for (var i = 0; i < vectors.Length; i++)
+            {
+                this[i] = vectors[i];
+            }
+        }
+
+        public static FloatMatrix One(int size)
+        {
+            var res = new FloatMatrix(size, size);
+            for (var i = 0; i < size; i++)
+            {
+                res[i, i] = 1;
+            }
+            return res;
+        }
+
         public FloatVector this[int rowNumber]
         {
             get { return GetHorizontalVector(rowNumber); }

@@ -61,7 +61,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\MatrixIOManager.cs" />
     <Compile Include="Model\SlaeIOManager.cs" />
+    <Compile Include="Model\VectorIOManager.cs" />
     <Compile Include="ViewModel\FileNameValidationRule.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
@@ -110,6 +112,14 @@
     <ProjectReference Include="..\Kindruk.lab3\Kindruk.lab3.csproj">
       <Project>{b180ebc0-b953-4682-9ab3-8e89d1a7d3aa}</Project>
       <Name>Kindruk.lab3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kindruk.lab4\Kindruk.lab4.csproj">
+      <Project>{f527d04e-2a3a-49d2-b26a-edd0740439dd}</Project>
+      <Name>Kindruk.lab4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kindruk.lab5\Kindruk.lab5.csproj">
+      <Project>{5d415695-dc44-49a9-9bde-ca8725a823a7}</Project>
+      <Name>Kindruk.lab5</Name>
     </ProjectReference>
     <ProjectReference Include="..\MathBase\MathBase.csproj">
       <Project>{33be65e5-0cbf-4a46-af6b-9fe08a84685f}</Project>

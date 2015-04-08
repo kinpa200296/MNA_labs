@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows.Input;
+using Kindruk.lab3;
+using Kindruk.lab4;
+using Kindruk.lab5;
 using Kindruk.lab7.ViewModel;
 using MathBase;
 using Microsoft.Win32;
@@ -12,14 +16,32 @@ namespace MNA_labs.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private string _inputFile, _outputFile;
+        private double _a, _b, _c, _x, _y, _l, _r, _step;
 
         public enum Method
         {
             Gauss, GaussWithSelection, SimpleIterations, Zeidel
         }
 
+        public enum Method3
+        {
+            Binary, Newton, Chords
+        }
+
+        public enum Method4
+        {
+            SimpleIterations, Newton
+        }
+
+        #region properties
+
         public ObservableCollection<string> Log { get; set; }
+        public ObservableCollection<string> Log3 { get; set; }
+        public ObservableCollection<string> Log4 { get; set; }
+        public ObservableCollection<string> Log5 { get; set; }
         public Method ChoosenMethod { get; set; }
+        public Method3 ChoosenMethod3 { get; set; }
+        public Method4 ChoosenMethod4{ get; set; }
 
         public string InputFile
         {
@@ -41,16 +63,111 @@ namespace MNA_labs.ViewModel
             }
         }
 
+        public double A
+        {
+            get { return _a; }
+            set
+            {
+                _a = value;
+                OnPropertyChanged("A");
+            }
+        }
+
+        public double B
+        {
+            get { return _b; }
+            set
+            {
+                _b = value;
+                OnPropertyChanged("B");
+            }
+        }
+
+        public double C
+        {
+            get { return _c; }
+            set
+            {
+                _c = value;
+                OnPropertyChanged("C");
+            }
+        }
+
+        public double X
+        {
+            get { return _x; }
+            set
+            {
+                _x = value;
+                OnPropertyChanged("X");
+            }
+        }
+
+        public double Y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                OnPropertyChanged("Y");
+            }
+        }
+
+        public double L
+        {
+            get { return _l; }
+            set
+            {
+                _l = value;
+                OnPropertyChanged("L");
+            }
+        }
+
+        public double R
+        {
+            get { return _r; }
+            set
+            {
+                _r = value;
+                OnPropertyChanged("R");
+            }
+        }
+
+        public double Step
+        {
+            get { return _step; }
+            set
+            {
+                _step = value;
+                OnPropertyChanged("Step");
+            }
+        }
+
+        #endregion
+
         #region constructors
 
         public MainWindowViewModel()
         {
             Log = new ObservableCollection<string>();
+            Log3 = new ObservableCollection<string>();
+            Log4 = new ObservableCollection<string>();
+            Log5 = new ObservableCollection<string>();
             InputFile = Directory.GetCurrentDirectory() + @"\lab1.in";
             OutputFile = Directory.GetCurrentDirectory() + @"\lab1.out";
+            A = 2.65804;
+            B = -28.0640;
+            C = 21.9032;
+            X = SnleSolver.InitialSolution[0];
+            Y = SnleSolver.InitialSolution[1];
+            L = -10;
+            R = 10;
+            Step = 0.01;
         }
 
         #endregion
+
+        #region commands
 
         public ICommand OpenFileDialog
         {
@@ -86,6 +203,50 @@ namespace MNA_labs.ViewModel
         {
             get { return new RelayCommand(DoActionExecute);}
         }
+
+        public ICommand DoAction3
+        {
+            get { return new RelayCommand(DoAction3Execute); }
+        }
+
+        public ICommand DoAction4
+        {
+            get { return new RelayCommand(DoAction4Execute); }
+        }
+
+        public ICommand DoAction5
+        {
+            get { return new RelayCommand(DoAction5Execute); }
+        }
+
+        public ICommand NleBinaryMethodChoosen
+        {
+            get { return new RelayCommand(NleBinaryMethodChoosenExecute); }
+        }
+
+        public ICommand NleChordsMethodChoosen
+        {
+            get { return new RelayCommand(NleChordsMethodChoosenExecute); }
+        }
+
+        public ICommand NleNewtonMethodChoosen
+        {
+            get { return new RelayCommand(NleNewtonMethodChoosenExecute); }
+        }
+
+        public ICommand SnleNewtonMethodChoosen
+        {
+            get { return new RelayCommand(SnleNewtonMethodChoosenExecute); }
+        }
+
+        public ICommand SnleSimpleIterationsMethodChoosen
+        {
+            get { return new RelayCommand(SnleSimpleIterationsMethodChoosenExecute); }
+        }
+
+        #endregion
+
+        #region methods
 
         public void OpenFileDialogExecute()
         {
@@ -180,5 +341,127 @@ namespace MNA_labs.ViewModel
                 Log.Add(e.Message);
             }
         }
+
+        public void NleBinaryMethodChoosenExecute()
+        {
+            ChoosenMethod3 = Method3.Binary;
+        }
+
+        public void NleChordsMethodChoosenExecute()
+        {
+            ChoosenMethod3 = Method3.Chords;
+        }
+
+        public void NleNewtonMethodChoosenExecute()
+        {
+            ChoosenMethod3 = Method3.Newton;
+        }
+
+        public void SnleNewtonMethodChoosenExecute()
+        {
+            ChoosenMethod4 = Method4.Newton;
+        }
+
+        public void SnleSimpleIterationsMethodChoosenExecute()
+        {
+            ChoosenMethod4 = Method4.SimpleIterations;
+        }
+
+        public void DoAction3Execute()
+        {
+            Log3.Clear();
+            Log3.Add(string.Format("Solving equation x^3 + ({0})*x^2 + ({1})*x + ({2}) = 0",
+                A.ToString(CultureInfo.InvariantCulture), B.ToString(CultureInfo.InvariantCulture),
+                C.ToString(CultureInfo.InvariantCulture)));
+            var polynom = new Polynom(new[] {C, B, A, 1});
+            Log3.Add(string.Format("{0} method is choosen", ChoosenMethod3));
+            Log3.Add(string.Format("Shturm root count: {0}", NleSolver.ShturmRootCount(polynom, L, R)));
+            var roots = NleSolver.FindRoots(polynom, L, R, Step);
+            foreach (var root in roots)
+            {
+                Log3.Add(string.Format("Root found on interval [{0}; {1}]", root.ToString(CultureInfo.InvariantCulture),
+                    (root + Step).ToString(CultureInfo.InvariantCulture)));
+            }
+            for (var i = 0; i < roots.Length; i++)
+            {
+                switch (ChoosenMethod3)
+                {
+                    case Method3.Binary:
+                        Log3.Add(string.Format("x{0} = {1}", i,
+                            NleSolver.FindRootBinarySearchMethod(polynom, roots[i], Step)
+                                .ToString(CultureInfo.InvariantCulture)));
+                        break;
+                    case Method3.Chords:
+                        Log3.Add(string.Format("x{0} = {1}", i,
+                            NleSolver.FindRootChordsMethod(polynom, roots[i], Step)
+                                .ToString(CultureInfo.InvariantCulture)));
+                        break;
+                    case Method3.Newton:
+                        Log3.Add(string.Format("x{0} = {1}", i,
+                            NleSolver.FindRootNewtonMethod(polynom, roots[i]).ToString(CultureInfo.InvariantCulture)));
+                        break;
+                }
+            }
+        }
+
+        public void DoAction4Execute()
+        {
+            Log4.Clear();
+            Log4.Add(string.Format("{0} method choosen", ChoosenMethod4));
+            Log4.Add(string.Format("Initial value by x: {0}", X.ToString(CultureInfo.InvariantCulture)));
+            Log4.Add(string.Format("Initial value by y: {0}", Y.ToString(CultureInfo.InvariantCulture)));
+            SnleSolver.InitialSolution = new[] {X, Y};
+            var result = new DoubleVector();
+            switch (ChoosenMethod4)
+            {
+                case Method4.SimpleIterations:
+                    result = SnleSolver.SolveWithSimpleIterationsMethod(SnleSolver.Phi);
+                    break;
+                case Method4.Newton:
+                    result = SnleSolver.SolveWithNewtonMethod(SnleSolver.F, SnleSolver.J);
+                    break;
+            }
+            Log4.Add(string.Format("x = {0}", result[0].ToString(CultureInfo.InvariantCulture)));
+            Log4.Add(string.Format("y = {0}", result[1].ToString(CultureInfo.InvariantCulture)));
+        }
+
+        public void DoAction5Execute()
+        {
+            DoubleMatrix matrix, eigenVectors;
+            DoubleVector eigenValues;
+            try
+            {
+                using (var file = File.OpenRead(InputFile))
+                {
+                    using (var reader = new StreamReader(file))
+                    {
+                        matrix = MatrixIoManager.LoadMatrix(reader);
+                    }
+                }
+                Log5.Add(string.Format(">>> Loaded data from {0}", InputFile));
+                EigenSolver.FindEigenValues(matrix, out eigenVectors, out eigenValues);
+                Log5.Add("Successfully solved!");
+                using (var file = File.Create(OutputFile))
+                {
+                    using (var writer = new StreamWriter(file))
+                    {
+                        writer.WriteLine("Eigen values:");
+                        VectorIoManager.SaveVector(writer, eigenValues);
+                        writer.WriteLine("Eigen vectors:");
+                        for (var i = 0; i < eigenVectors.ColumnCount; i++)
+                        {
+                            VectorIoManager.SaveVector(writer, eigenVectors.GetVerticalVector(i));
+                        }
+                    }
+                }
+                Log5.Add(string.Format("Successfully saved to {0}", OutputFile));
+            }
+            catch (Exception e)
+            {
+                Log5.Add(e.Message);
+            }
+        }
+
+        #endregion
     }
 }
