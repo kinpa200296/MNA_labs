@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Kindruk.lab3;
@@ -10,6 +11,7 @@ using Kindruk.lab5;
 using Kindruk.lab7;
 using Kindruk.lab7.ViewModel;
 using Kindruk.lab8;
+using Kindruk.lab9;
 using MathBase;
 using Microsoft.Win32;
 using MNA_labs.Model;
@@ -19,7 +21,7 @@ namespace MNA_labs.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private string _inputFile, _outputFile;
-        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val, _epsDiff, _epsIntegral, _val8, _left8, _right8;
+        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val, _epsDiff, _epsIntegral, _val8, _left8, _right8, _left9, _right9, _eps9, _a9, _m9, _y09;
         private int _nodeCount;
 
         public enum Method
@@ -47,6 +49,11 @@ namespace MNA_labs.ViewModel
             Simpson, Trapezoids, Averages
         }
 
+        public enum Method9
+        {
+            RungeKutt, Eiler
+        }
+
         #region properties
 
         public ObservableCollection<string> Log { get; set; }
@@ -55,11 +62,13 @@ namespace MNA_labs.ViewModel
         public ObservableCollection<string> Log5 { get; set; }
         public ObservableCollection<string> Log7 { get; set; }
         public ObservableCollection<string> Log8 { get; set; }
+        public ObservableCollection<string> Log9 { get; set; }
         public Method ChoosenMethod { get; set; }
         public Method3 ChoosenMethod3 { get; set; }
         public Method4 ChoosenMethod4{ get; set; }
         public Function ChoosenFunction { get; set; }
         public Method8 ChoosenMethod8 { get; set; }
+        public Method9 ChoosenMethod9 { get; set; }
 
         public string InputFile
         {
@@ -251,6 +260,66 @@ namespace MNA_labs.ViewModel
             }
         }
 
+        public double Left9
+        {
+            get { return _left9; }
+            set
+            {
+                _left9 = value;
+                OnPropertyChanged("Left9");
+            }
+        }
+
+        public double Right9
+        {
+            get { return _right9; }
+            set
+            {
+                _right9 = value;
+                OnPropertyChanged("Right9");
+            }
+        }
+
+        public double A9
+        {
+            get { return _a9; }
+            set
+            {
+                _a9 = value;
+                OnPropertyChanged("A9");
+            }
+        }
+
+        public double M9
+        {
+            get { return _m9; }
+            set
+            {
+                _m9 = value;
+                OnPropertyChanged("M9");
+            }
+        }
+
+        public double Eps9
+        {
+            get { return _eps9; }
+            set
+            {
+                _eps9 = value;
+                OnPropertyChanged("Eps9");
+            }
+        }
+
+        public double Y09
+        {
+            get { return _y09; }
+            set
+            {
+                _y09 = value;
+                OnPropertyChanged("Y09");
+            }
+        }
+
         #endregion
 
         #region constructors
@@ -263,6 +332,7 @@ namespace MNA_labs.ViewModel
             Log5 = new ObservableCollection<string>();
             Log7 = new ObservableCollection<string>();
             Log8 = new ObservableCollection<string>();
+            Log9 = new ObservableCollection<string>();
             InputFile = Directory.GetCurrentDirectory() + @"\lab1.in";
             OutputFile = Directory.GetCurrentDirectory() + @"\lab1.out";
             A = 2.65804;
@@ -283,6 +353,12 @@ namespace MNA_labs.ViewModel
             Left8 = 1;
             Right8 = 2;
             Val8 = 1.5;
+            Left9 = 0;
+            Right9 = 1;
+            Y09 = 0;
+            A9 = 1.1;
+            M9 = 2.0;
+            Eps9 = 0.001;
         }
 
         #endregion
@@ -437,6 +513,21 @@ namespace MNA_labs.ViewModel
         public ICommand ChoosenTrapezoidsMethod
         {
             get { return new RelayCommand(ChoosenTrapezoidsMethodExecute); }
+        }
+
+        public ICommand DoAction9
+        {
+            get { return new RelayCommand(DoAction9Execute); }
+        }
+
+        public ICommand RungeKuttMethodChoosen
+        {
+            get { return new RelayCommand(RungeKuttMehodChoosenExecute); }
+        }
+
+        public ICommand EilerMethodChoosen
+        {
+            get { return new RelayCommand(EilerMehodChoosenExecute); }
         }
 
         #endregion
@@ -873,6 +964,56 @@ namespace MNA_labs.ViewModel
                         break;
                 }
 
+            }
+            catch (Exception e)
+            {
+                Log8.Add(e.Message);
+            }
+        }
+
+        public void RungeKuttMehodChoosenExecute()
+        {
+            ChoosenMethod9 = Method9.RungeKutt;
+        }
+
+        public void EilerMehodChoosenExecute()
+        {
+            ChoosenMethod9 = Method9.Eiler;
+        }
+
+        public void DoAction9Execute()
+        {
+            Log9.Clear();
+            try
+            {
+                Log9.Add(string.Format("Solving differential equation with {2} method on interval [{0}; {1}]",
+                    Left9.ToString("F6", CultureInfo.InvariantCulture),
+                    Right9.ToString("F6", CultureInfo.InvariantCulture), ChoosenMethod9));
+                Log9.Add(string.Format("y'(x) = {0}*(1 - y^2)/((1 + {1})x^2 + y^2 + 1)",
+                    A9.ToString("F6", CultureInfo.InvariantCulture), M9.ToString("F6", CultureInfo.InvariantCulture)));
+                Log9.Add(string.Format("y(0) = {0}", Y09.ToString("F6", CultureInfo.InvariantCulture)));
+                var xVector = new DoubleVector();
+                var yVector = new DoubleVector();
+                switch (ChoosenMethod9)
+                {
+                    case Method9.Eiler:
+                        DeSolver.EilerMethod(Left9, Right9, Eps9, (x, y) => A9*(1 - y*y)/((1 + M9)*x*x + y*y + 1),
+                            out xVector, out yVector, Y09);
+                        break;
+                    case Method9.RungeKutt:
+                        DeSolver.RungeKuttMethod(Left9, Right9, Eps9, (x, y) => A9*(1 - y*y)/((1 + M9)*x*x + y*y + 1),
+                            out xVector, out yVector, Y09);
+                        break;
+                }
+                foreach (
+                    var item in
+                        xVector.Select(
+                            (x, i) =>
+                                string.Format("x = {0}; y = {1}", x.ToString("F6", CultureInfo.InvariantCulture),
+                                    yVector[i].ToString("F6", CultureInfo.InvariantCulture))))
+                {
+                    Log9.Add(item);
+                }
             }
             catch (Exception e)
             {

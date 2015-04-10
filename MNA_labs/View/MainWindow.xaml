@@ -394,5 +394,72 @@
                              Content="Метод трапеций"/>
             </Grid>
         </TabItem>
+        <TabItem Header="Лабораторная 9">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Row="5" Grid.Column="0" 
+                         Grid.ColumnSpan="2"
+                         ItemsSource="{Binding Log9}"/>
+                <DockPanel Grid.Row="0" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Левый конец отрезка: "/>
+                    <TextBox Text="{Binding Left9}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Правый конец отрезка: "/>
+                    <TextBox Text="{Binding Right9}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="2" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Точность интегрирования: "/>
+                    <TextBox Text="{Binding Eps9}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="3" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="a: "/>
+                    <TextBox Text="{Binding A9}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="4" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="m: "/>
+                    <TextBox Text="{Binding M9}"/>
+                </DockPanel>
+                <Button Grid.Row="4" Grid.Column="1"
+                        Content="Выполнить" Margin="5"
+                        Command="{Binding DoAction9}"/>
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="y0: "/>
+                    <TextBox Text="{Binding Y09}"/>
+                </DockPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="Выберите метод интегрирования:"/>
+                <RadioButton Grid.Row="2" Grid.Column="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Command="{Binding RungeKuttMethodChoosen}"
+                             Content="Метод Рунге-Кутта"
+                             IsChecked="True"/>
+                <RadioButton Grid.Row="3" Grid.Column="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Command="{Binding EilerMethodChoosen}"
+                             Content="Метод Эйлера"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>
