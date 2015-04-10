@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows.Input;
 using Kindruk.lab3;
 using Kindruk.lab4;
 using Kindruk.lab5;
+using Kindruk.lab7;
 using Kindruk.lab7.ViewModel;
 using MathBase;
 using Microsoft.Win32;
@@ -16,7 +18,8 @@ namespace MNA_labs.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private string _inputFile, _outputFile;
-        private double _a, _b, _c, _x, _y, _l, _r, _step;
+        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val;
+        private int _nodeCount;
 
         public enum Method
         {
@@ -33,15 +36,22 @@ namespace MNA_labs.ViewModel
             SimpleIterations, Newton
         }
 
+        public enum Function
+        {
+            Exp, Log, Sinh, Cosh, Atan, Tanh, Tan, Sqrt, Sqrt1, X1
+        }
+
         #region properties
 
         public ObservableCollection<string> Log { get; set; }
         public ObservableCollection<string> Log3 { get; set; }
         public ObservableCollection<string> Log4 { get; set; }
         public ObservableCollection<string> Log5 { get; set; }
+        public ObservableCollection<string> Log7 { get; set; }
         public Method ChoosenMethod { get; set; }
         public Method3 ChoosenMethod3 { get; set; }
         public Method4 ChoosenMethod4{ get; set; }
+        public Function ChoosenFunction { get; set; }
 
         public string InputFile
         {
@@ -143,6 +153,46 @@ namespace MNA_labs.ViewModel
             }
         }
 
+        public double Left
+        {
+            get { return _left; }
+            set
+            {
+                _left = value;
+                OnPropertyChanged("Left");
+            }
+        }
+
+        public double Right
+        {
+            get { return _right; }
+            set
+            {
+                _right = value;
+                OnPropertyChanged("Right");
+            }
+        }
+
+        public int NodeCount
+        {
+            get { return _nodeCount; }
+            set
+            {
+                _nodeCount = value;
+                OnPropertyChanged("NodeCount");
+            }
+        }
+
+        public double Val
+        {
+            get { return _val; }
+            set
+            {
+                _val = value;
+                OnPropertyChanged("Val");
+            }
+        }
+
         #endregion
 
         #region constructors
@@ -153,6 +203,7 @@ namespace MNA_labs.ViewModel
             Log3 = new ObservableCollection<string>();
             Log4 = new ObservableCollection<string>();
             Log5 = new ObservableCollection<string>();
+            Log7 = new ObservableCollection<string>();
             InputFile = Directory.GetCurrentDirectory() + @"\lab1.in";
             OutputFile = Directory.GetCurrentDirectory() + @"\lab1.out";
             A = 2.65804;
@@ -163,6 +214,11 @@ namespace MNA_labs.ViewModel
             L = -10;
             R = 10;
             Step = 0.01;
+            ChoosenFunction = Function.Sqrt1;
+            Left = 1;
+            Right = 3;
+            Val = 1;
+            NodeCount = 6;
         }
 
         #endregion
@@ -242,6 +298,61 @@ namespace MNA_labs.ViewModel
         public ICommand SnleSimpleIterationsMethodChoosen
         {
             get { return new RelayCommand(SnleSimpleIterationsMethodChoosenExecute); }
+        }
+
+        public ICommand DoAction7
+        {
+            get { return new RelayCommand(DoAction7Execute); }
+        }
+
+        public ICommand AtanFunctionChoosen
+        {
+            get { return new RelayCommand(AtanFunctionChoosenExecute); }
+        }
+
+        public ICommand CoshFunctionChoosen
+        {
+            get { return new RelayCommand(CoshFunctionChoosenExecute); }
+        }
+
+        public ICommand LogFunctionChoosen
+        {
+            get { return new RelayCommand(LogFunctionChoosenExecute); }
+        }
+
+        public ICommand ExpFunctionChoosen
+        {
+            get { return new RelayCommand(ExpFunctionChoosenExecute); }
+        }
+
+        public ICommand SinhFunctionChoosen
+        {
+            get { return new RelayCommand(SinhFunctionChoosenExecute); }
+        }
+
+        public ICommand SqrtFunctionChoosen
+        {
+            get { return new RelayCommand(SqrtFunctionChoosenExecute); }
+        }
+
+        public ICommand Sqrt1FunctionChoosen
+        {
+            get { return new RelayCommand(Sqrt1FunctionChoosenExecute); }
+        }
+
+        public ICommand TanFunctionChoosen
+        {
+            get { return new RelayCommand(TanFunctionChoosenExecute); }
+        }
+
+        public ICommand TanhFunctionChoosen
+        {
+            get { return new RelayCommand(TanhFunctionChoosenExecute); }
+        }
+
+        public ICommand X1FunctionChoosen
+        {
+            get { return new RelayCommand(X1FunctionChoosenExecute); }
         }
 
         #endregion
@@ -459,6 +570,172 @@ namespace MNA_labs.ViewModel
             catch (Exception e)
             {
                 Log5.Add(e.Message);
+            }
+        }
+
+        public void ExpFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Exp;
+        }
+
+        public void AtanFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Atan;
+        }
+
+        public void CoshFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Cosh;
+        }
+
+        public void LogFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Log;
+        }
+
+        public void SinhFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Sinh;
+        }
+
+        public void SqrtFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Sqrt;
+        }
+
+        public void Sqrt1FunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Sqrt1;
+        }
+
+        public void TanFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Tan;
+        }
+
+        public void TanhFunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.Tanh;
+        }
+
+        public void X1FunctionChoosenExecute()
+        {
+            ChoosenFunction = Function.X1;
+        }
+
+        public void DoAction7Execute()
+        {
+            Log7.Clear();
+            try
+            {
+                var cubicSpline = new CubicSpline(0);
+                switch (ChoosenFunction)
+                {
+                    case Function.Atan:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = arctg(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Atan(x));
+                        break;
+                    case Function.Cosh:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = ch(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Cosh(x));
+                        break;
+                    case Function.Exp:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = e^(-x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Exp(-x));
+                        break;
+                    case Function.Log:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = ln(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Log(x));
+                        break;
+                    case Function.Sinh:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = sh(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Sinh(x));
+                        break;
+                    case Function.Sqrt:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = x^(-1/2) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Sqrt(x));
+                        break;
+                    case Function.Sqrt1:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = 1/x^(1/2) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => 1.0 / Math.Sqrt(x));
+                        break;
+                    case Function.Tan:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = tg(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Tan(x));
+                        break;
+                    case Function.Tanh:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = th(x) on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => Math.Tanh(x));
+                        break;
+                    case Function.X1:
+                        Log7.Add(
+                            String.Format("Building cubic spline for function y(x) = 1/x on interval [{0}; {1}]",
+                                Left.ToString("F6", CultureInfo.InvariantCulture),
+                                Right.ToString("F6", CultureInfo.InvariantCulture)));
+                        cubicSpline = CubicSpline.Build(Left, Right, NodeCount, x => 1.0 / x);
+                        break;
+                }
+                Log7.Add(string.Format("Value of cubic spline at x = {0}  :  {1}",
+                    Val.ToString("F6", CultureInfo.InvariantCulture),
+                    cubicSpline.Calculate(Val).ToString("F6", CultureInfo.InvariantCulture)));
+                Log7.Add("Splines:");
+                for (var i = 0; i < cubicSpline.Count; i++)
+                {
+                    var builder =
+                        new StringBuilder(string.Format("[{0}; {1}]: ",
+                            cubicSpline[i].Left.ToString("F6", CultureInfo.InvariantCulture),
+                            cubicSpline[i].Right.ToString("F6", CultureInfo.InvariantCulture)));
+                    builder.Append(Math.Abs(cubicSpline[i].A) > 1e-12
+                        ? string.Format("{0} + ", cubicSpline[i].A.ToString("F6", CultureInfo.InvariantCulture))
+                        : "");
+                    builder.Append(Math.Abs(cubicSpline[i].B) > 1e-12
+                        ? string.Format("{0}*(x - {1}) + ",
+                            cubicSpline[i].B.ToString("F6", CultureInfo.InvariantCulture),
+                            cubicSpline[i].Left.ToString("F6", CultureInfo.InvariantCulture))
+                        : "");
+                    builder.Append(Math.Abs(cubicSpline[i].C) > 1e-12
+                        ? string.Format("{0}*(x - {1})^2 + ",
+                            cubicSpline[i].C.ToString("F6", CultureInfo.InvariantCulture),
+                            cubicSpline[i].Left.ToString("F6", CultureInfo.InvariantCulture))
+                        : "");
+                    builder.Append(Math.Abs(cubicSpline[i].D) > 1e-12
+                        ? string.Format("{0}*(x - {1})^3",
+                            cubicSpline[i].D.ToString("F6", CultureInfo.InvariantCulture),
+                            cubicSpline[i].Left.ToString("F6", CultureInfo.InvariantCulture))
+                        : "");
+                    Log7.Add(builder.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Log7.Add(e.Message);
             }
         }
 

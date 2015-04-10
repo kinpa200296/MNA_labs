@@ -228,5 +228,104 @@
                          ItemsSource="{Binding Log5}"/>
             </Grid>
         </TabItem>
+        <TabItem Header="Лабораторная 7">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                           Grid.ColumnSpan="2"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           Text="Выберите функцию:"/>
+                <RadioButton Grid.Row="1" Grid.Column="0"
+                             Content="e^(-x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding ExpFunctionChoosen}"/>
+                <RadioButton Grid.Row="1" Grid.Column="1"
+                             Content="ln(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding LogFunctionChoosen}"/>
+                <RadioButton Grid.Row="2" Grid.Column="0"
+                             Content="x^(1/2)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding SqrtFunctionChoosen}"/>
+                <RadioButton Grid.Row="2" Grid.Column="1"
+                             Content="1/x"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding X1FunctionChoosen}"/>
+                <RadioButton Grid.Row="3" Grid.Column="0"
+                             Content="sh(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding SinhFunctionChoosen}"/>
+                <RadioButton Grid.Row="3" Grid.Column="1"
+                             Content="arctg(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding AtanFunctionChoosen}"/>
+                <RadioButton Grid.Row="4" Grid.Column="0"
+                             Content="ch(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding CoshFunctionChoosen}"/>
+                <RadioButton Grid.Row="4" Grid.Column="1"
+                             Content="th(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding TanhFunctionChoosen}"/>
+                <RadioButton Grid.Row="5" Grid.Column="0"
+                             Content="1/x^(1/2)" IsChecked="True"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding Sqrt1FunctionChoosen}"/>
+                <RadioButton Grid.Row="5" Grid.Column="1"
+                             Content="tg(x)"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Command="{Binding TanFunctionChoosen}"/>
+                <ListBox Grid.Row="6" Grid.Column="0" 
+                         Grid.ColumnSpan="3"
+                         ItemsSource="{Binding Log7}"/>
+                <DockPanel Grid.Row="0" Grid.Column="2" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Левый конец отрезка: "/>
+                    <TextBox Text="{Binding Left}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="2" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Правый конец отрезка: "/>
+                    <TextBox Text="{Binding Right}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="2" Grid.Column="2" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Количество узлов: "/>
+                    <TextBox Text="{Binding NodeCount}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="3" Grid.Column="2" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="X: "/>
+                    <TextBox Text="{Binding Val}"/>
+                </DockPanel>
+                <Button Grid.Row="4" Grid.Column="2" Margin="5"
+                        Content="Выполнить интерполяцию"
+                        Command="{Binding DoAction7}"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

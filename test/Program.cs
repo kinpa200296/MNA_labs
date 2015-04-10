@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Kindruk.lab3;
 using Kindruk.lab4;
+using Kindruk.lab7;
 using MathBase;
 
 namespace test
@@ -13,64 +14,67 @@ namespace test
         static void Main(string[] args)
         {
 
-            DoubleMatrix matrix;
-            DoubleVector values;
+            var s = CubicSpline.Build(0, 2, 6, x => Math.Tanh(x));
+            Console.WriteLine(s.Calculate(1));
 
-            var C = new DoubleMatrix(new double[,]
-            {
-                {0.2, 0, 0.2, 0, 0},
-                {0, 0.2, 0, 0.2, 0},
-                {0.2, 0, 0.2, 0, 0.2},
-                {0, 0.2, 0, 0.2, 0},
-                {0, 0, 0.2, 0, 0.2}
-            });
+            //DoubleMatrix matrix;
+            //DoubleVector values;
+
             //var C = new DoubleMatrix(new double[,]
             //{
-            //    {0.01, 0, -0.02, 0, 0},
-            //    {0.01, 0.01, -0.02, 0, 0},
-            //    {0, 0.01, 0.01, 0, -0.02},
-            //    {0, 0, 0.01, 0.01, 0},
-            //    {0, 0, 0, 0.01, 0.01}
+            //    {0.2, 0, 0.2, 0, 0},
+            //    {0, 0.2, 0, 0.2, 0},
+            //    {0.2, 0, 0.2, 0, 0.2},
+            //    {0, 0.2, 0, 0.2, 0},
+            //    {0, 0, 0.2, 0, 0.2}
             //});
-            var k = 9;
-            var D = new DoubleMatrix(new double[,]
-            {
-                {2.33, 0.81, 0.67, 0.92, -0.53},
-                {0.81, 2.33, 0.81, 0.67, 0.92},
-                {0.67, 0.81, 2.33, 0.81, 0.92},
-                {0.92, 0.67, 0.81, 2.33, -0.53},
-                {-0.53, 0.92, 0.92, -0.53, 2.33}
-            });
+            ////var C = new DoubleMatrix(new double[,]
+            ////{
+            ////    {0.01, 0, -0.02, 0, 0},
+            ////    {0.01, 0.01, -0.02, 0, 0},
+            ////    {0, 0.01, 0.01, 0, -0.02},
+            ////    {0, 0, 0.01, 0.01, 0},
+            ////    {0, 0, 0, 0.01, 0.01}
+            ////});
+            //var k = 9;
             //var D = new DoubleMatrix(new double[,]
             //{
-            //    {1.33, 0.21, 0.17, 0.12, -0.13},
-            //    {-0.13, -1.33, 0.11, 0.17, 0.12},
-            //    {0.12, -0.13, -1.33, 0.11, 0.17},
-            //    {0.17, 0.12, -0.13, -1.33, 0.11},
-            //    {0.11, 0.67, 0.12, -0.13, -1.33},
+            //    {2.33, 0.81, 0.67, 0.92, -0.53},
+            //    {0.81, 2.33, 0.81, 0.67, 0.92},
+            //    {0.67, 0.81, 2.33, 0.81, 0.92},
+            //    {0.92, 0.67, 0.81, 2.33, -0.53},
+            //    {-0.53, 0.92, 0.92, -0.53, 2.33}
             //});
-            D += k * C;
-            //var b = new DoubleVector(new double[] {4.2, 4.2, 4.2, 4.2, 4.2});
-            var b = new DoubleVector(new double[] { 1.2, 2.2, 4.0, 0.0, -1.2 });
-            using (var file = File.Create(args[0]))
-            {
-                using (var writer = new StreamWriter(file))
-                {
-                    writer.WriteLine(D.RowCount);
-                    for (var i = 0; i < D.RowCount; i++)
-                    {
-                        foreach (var val in D[i])
-                        {
-                            writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
-                        }
-                        writer.WriteLine();
-                    }
-                    //foreach (var val in b)
-                    //{
-                    //    writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
-                    //}
-                }
-            }
+            ////var D = new DoubleMatrix(new double[,]
+            ////{
+            ////    {1.33, 0.21, 0.17, 0.12, -0.13},
+            ////    {-0.13, -1.33, 0.11, 0.17, 0.12},
+            ////    {0.12, -0.13, -1.33, 0.11, 0.17},
+            ////    {0.17, 0.12, -0.13, -1.33, 0.11},
+            ////    {0.11, 0.67, 0.12, -0.13, -1.33},
+            ////});
+            //D += k * C;
+            ////var b = new DoubleVector(new double[] {4.2, 4.2, 4.2, 4.2, 4.2});
+            //var b = new DoubleVector(new double[] { 1.2, 2.2, 4.0, 0.0, -1.2 });
+            //using (var file = File.Create(args[0]))
+            //{
+            //    using (var writer = new StreamWriter(file))
+            //    {
+            //        writer.WriteLine(D.RowCount);
+            //        for (var i = 0; i < D.RowCount; i++)
+            //        {
+            //            foreach (var val in D[i])
+            //            {
+            //                writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
+            //            }
+            //            writer.WriteLine();
+            //        }
+            //        //foreach (var val in b)
+            //        //{
+            //        //    writer.Write("{0} ", val.ToString("F4", CultureInfo.InvariantCulture));
+            //        //}
+            //    }
+            //}
             /*using (var file = File.OpenRead(args[0]))
            {
                using (var reader = new StreamReader(file))

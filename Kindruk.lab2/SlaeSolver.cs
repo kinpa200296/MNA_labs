@@ -19,6 +19,7 @@ namespace Kindruk.lab2
             answers = new DoubleVector(values.Length);
             for (var i = 0; i < matrix.RowCount; i++)
             {
+                values[i] /= matrix[i, i];
                 matrix[i] = matrix[i]/matrix[i, i];
                 matrix[i,i] = 0;
             }
@@ -60,6 +61,7 @@ namespace Kindruk.lab2
             }
             for (var i = 0; i < matrix.RowCount; i++)
             {
+                values[i] /= matrix[i, i];
                 matrix[i] = matrix[i]/matrix[i, i];
                 matrix[i, i] = 0;
             }
