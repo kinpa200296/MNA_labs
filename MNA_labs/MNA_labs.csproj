@@ -129,6 +129,10 @@
       <Project>{d67cfdfa-ae7f-42e4-b215-df09ddbe75d2}</Project>
       <Name>Kindruk.lab7</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kindruk.lab8\Kindruk.lab8.csproj">
+      <Project>{5fcfc4b2-76ba-41f6-9597-c228769e3d0e}</Project>
+      <Name>Kindruk.lab8</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MathBase\MathBase.csproj">
       <Project>{33be65e5-0cbf-4a46-af6b-9fe08a84685f}</Project>
       <Name>MathBase</Name>

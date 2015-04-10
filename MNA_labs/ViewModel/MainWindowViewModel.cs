@@ -9,6 +9,7 @@ using Kindruk.lab4;
 using Kindruk.lab5;
 using Kindruk.lab7;
 using Kindruk.lab7.ViewModel;
+using Kindruk.lab8;
 using MathBase;
 using Microsoft.Win32;
 using MNA_labs.Model;
@@ -18,7 +19,7 @@ namespace MNA_labs.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private string _inputFile, _outputFile;
-        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val;
+        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val, _epsDiff, _epsIntegral, _val8, _left8, _right8;
         private int _nodeCount;
 
         public enum Method
@@ -41,6 +42,11 @@ namespace MNA_labs.ViewModel
             Exp, Log, Sinh, Cosh, Atan, Tanh, Tan, Sqrt, Sqrt1, X1
         }
 
+        public enum Method8
+        {
+            Simpson, Trapezoids, Averages
+        }
+
         #region properties
 
         public ObservableCollection<string> Log { get; set; }
@@ -48,10 +54,12 @@ namespace MNA_labs.ViewModel
         public ObservableCollection<string> Log4 { get; set; }
         public ObservableCollection<string> Log5 { get; set; }
         public ObservableCollection<string> Log7 { get; set; }
+        public ObservableCollection<string> Log8 { get; set; }
         public Method ChoosenMethod { get; set; }
         public Method3 ChoosenMethod3 { get; set; }
         public Method4 ChoosenMethod4{ get; set; }
         public Function ChoosenFunction { get; set; }
+        public Method8 ChoosenMethod8 { get; set; }
 
         public string InputFile
         {
@@ -193,6 +201,56 @@ namespace MNA_labs.ViewModel
             }
         }
 
+        public double EpsDiff
+        {
+            get { return _epsDiff; }
+            set
+            {
+                _epsDiff = value;
+                OnPropertyChanged("EpsDiff");
+            }
+        }
+
+        public double EpsIntegral
+        {
+            get { return _epsIntegral; }
+            set
+            {
+                _epsIntegral = value;
+                OnPropertyChanged("EpsIntegral");
+            }
+        }
+
+        public double Left8
+        {
+            get { return _left8; }
+            set
+            {
+                _left8 = value;
+                OnPropertyChanged("Left8");
+            }
+        }
+
+        public double Right8
+        {
+            get { return _right8; }
+            set
+            {
+                _right8 = value;
+                OnPropertyChanged("Right8");
+            }
+        }
+
+        public double Val8
+        {
+            get { return _val8; }
+            set
+            {
+                _val8 = value;
+                OnPropertyChanged("Val8");
+            }
+        }
+
         #endregion
 
         #region constructors
@@ -204,6 +262,7 @@ namespace MNA_labs.ViewModel
             Log4 = new ObservableCollection<string>();
             Log5 = new ObservableCollection<string>();
             Log7 = new ObservableCollection<string>();
+            Log8 = new ObservableCollection<string>();
             InputFile = Directory.GetCurrentDirectory() + @"\lab1.in";
             OutputFile = Directory.GetCurrentDirectory() + @"\lab1.out";
             A = 2.65804;
@@ -219,6 +278,11 @@ namespace MNA_labs.ViewModel
             Right = 3;
             Val = 1;
             NodeCount = 6;
+            EpsDiff = 0.01;
+            EpsIntegral = 1e-6;
+            Left8 = 1;
+            Right8 = 2;
+            Val8 = 1.5;
         }
 
         #endregion
@@ -353,6 +417,26 @@ namespace MNA_labs.ViewModel
         public ICommand X1FunctionChoosen
         {
             get { return new RelayCommand(X1FunctionChoosenExecute); }
+        }
+
+        public ICommand DoAction8
+        {
+            get { return new RelayCommand(DoAction8Execute); }
+        }
+
+        public ICommand ChoosenSimpsonMethod
+        {
+            get { return new RelayCommand(ChoosenSimpsonMethodExecute); }
+        }
+
+        public ICommand ChoosenAveragesMethod
+        {
+            get { return new RelayCommand(ChoosenAveragesMethodExecute); }
+        }
+
+        public ICommand ChoosenTrapezoidsMethod
+        {
+            get { return new RelayCommand(ChoosenTrapezoidsMethodExecute); }
         }
 
         #endregion
@@ -736,6 +820,63 @@ namespace MNA_labs.ViewModel
             catch (Exception e)
             {
                 Log7.Add(e.Message);
+            }
+        }
+
+        public void ChoosenSimpsonMethodExecute()
+        {
+            ChoosenMethod8 = Method8.Simpson;
+        }
+
+        public void ChoosenTrapezoidsMethodExecute()
+        {
+            ChoosenMethod8 = Method8.Trapezoids;
+        }
+
+        public void ChoosenAveragesMethodExecute()
+        {
+            ChoosenMethod8 = Method8.Averages;
+        }
+
+        public void DoAction8Execute()
+        {
+            Log8.Clear();
+            try
+            {
+                var func = new Func<double, double>(x => Math.Cos(x)/x);
+                Log8.Add("f(x) = cos(x)/x");
+                Log8.Add(string.Format("f'({0}) = {1}", Val8.ToString("F6", CultureInfo.InvariantCulture),
+                    FunctionCalculator.CalculateFirstDerivative(Val8, EpsDiff, func)
+                        .ToString("F6", CultureInfo.InvariantCulture)));
+                Log8.Add(string.Format("f''({0}) = {1}", Val8.ToString("F6", CultureInfo.InvariantCulture),
+                    FunctionCalculator.CalculateSecondDerivative(Val8, EpsDiff, func)
+                        .ToString("F6", CultureInfo.InvariantCulture)));
+                Log8.Add(string.Format("Integrating with {0} method on inteval [{1}; {2}]", ChoosenMethod8,
+                    Left8.ToString("F6", CultureInfo.InvariantCulture),
+                    Right8.ToString("F6", CultureInfo.InvariantCulture)));
+                switch (ChoosenMethod8)
+                {
+                    case Method8.Simpson:
+                        Log8.Add(string.Format("result = {0}",
+                            FunctionCalculator.IntegrateSimpsonMethod(Left8, Right8, EpsIntegral, func)
+                                .ToString("F6", CultureInfo.InvariantCulture)));
+                        break;
+                    case Method8.Averages:
+                        Log8.Add(string.Format("result = {0}",
+                            FunctionCalculator.IntegrateAveragesMethod(Left8, Right8, EpsIntegral, func)
+                                .ToString("F6", CultureInfo.InvariantCulture)));
+                        break;
+                    case Method8.Trapezoids:
+                        Log8.Add(string.Format("result = {0}",
+                            FunctionCalculator.IntegrateTrapezoidsMethod(Left8, Right8, EpsIntegral, func)
+                                .ToString("F6", CultureInfo.InvariantCulture)));
+                        break;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Log8.Add(e.Message);
             }
         }
 

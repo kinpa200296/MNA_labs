@@ -327,5 +327,72 @@
                         Command="{Binding DoAction7}"/>
             </Grid>
         </TabItem>
+        <TabItem Header="Лабораторная 8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Row="5" Grid.Column="0" 
+                         Grid.ColumnSpan="2"
+                         ItemsSource="{Binding Log8}"/>
+                <DockPanel Grid.Row="0" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Левый конец отрезка: "/>
+                    <TextBox Text="{Binding Left8}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Правый конец отрезка: "/>
+                    <TextBox Text="{Binding Right8}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="2" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Точность интегрирования: "/>
+                    <TextBox Text="{Binding EpsIntegral}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="3" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Точность дифференцирования: "/>
+                    <TextBox Text="{Binding EpsDiff}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="4" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="X: "/>
+                    <TextBox Text="{Binding Val8}"/>
+                </DockPanel>
+                <Button Grid.Row="4" Grid.Column="1"
+                        Content="Выполнить" Margin="5"
+                        Command="{Binding DoAction8}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="Выберите метод интегрирования:"/>
+                <RadioButton Grid.Row="1" Grid.Column="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Command="{Binding ChoosenSimpsonMethod}"
+                             Content="Метод Симпсона"
+                             IsChecked="True"/>
+                <RadioButton Grid.Row="2" Grid.Column="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Command="{Binding ChoosenAveragesMethod}"
+                             Content="Метод средних"/>
+                <RadioButton Grid.Row="3" Grid.Column="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Command="{Binding ChoosenTrapezoidsMethod}"
+                             Content="Метод трапеций"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>
