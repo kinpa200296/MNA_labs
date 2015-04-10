@@ -21,7 +21,7 @@ namespace MNA_labs.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private string _inputFile, _outputFile;
-        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val, _epsDiff, _epsIntegral, _val8, _left8, _right8, _left9, _right9, _eps9, _a9, _m9, _y09;
+        private double _a, _b, _c, _x, _y, _l, _r, _step, _left, _right, _val, _epsDiff, _epsIntegral, _val8, _left8, _right8, _left9, _right9, _eps9, _a9, _m9, _y09, _left10, _right10, _eps10, _a10, _m10, _y010, _y110;
         private int _nodeCount;
 
         public enum Method
@@ -63,6 +63,7 @@ namespace MNA_labs.ViewModel
         public ObservableCollection<string> Log7 { get; set; }
         public ObservableCollection<string> Log8 { get; set; }
         public ObservableCollection<string> Log9 { get; set; }
+        public ObservableCollection<string> Log10 { get; set; }
         public Method ChoosenMethod { get; set; }
         public Method3 ChoosenMethod3 { get; set; }
         public Method4 ChoosenMethod4{ get; set; }
@@ -320,6 +321,76 @@ namespace MNA_labs.ViewModel
             }
         }
 
+        public double Left10
+        {
+            get { return _left10; }
+            set
+            {
+                _left10 = value;
+                OnPropertyChanged("Left10");
+            }
+        }
+
+        public double Right10
+        {
+            get { return _right10; }
+            set
+            {
+                _right10 = value;
+                OnPropertyChanged("Right10");
+            }
+        }
+
+        public double A10
+        {
+            get { return _a10; }
+            set
+            {
+                _a10 = value;
+                OnPropertyChanged("A10");
+            }
+        }
+
+        public double M10
+        {
+            get { return _m10; }
+            set
+            {
+                _m10 = value;
+                OnPropertyChanged("M10");
+            }
+        }
+
+        public double Eps10
+        {
+            get { return _eps10; }
+            set
+            {
+                _eps10 = value;
+                OnPropertyChanged("Eps10");
+            }
+        }
+
+        public double Y010
+        {
+            get { return _y010; }
+            set
+            {
+                _y010 = value;
+                OnPropertyChanged("Y010");
+            }
+        }
+
+        public double Y110
+        {
+            get { return _y110; }
+            set
+            {
+                _y110 = value;
+                OnPropertyChanged("Y110");
+            }
+        }
+
         #endregion
 
         #region constructors
@@ -333,6 +404,7 @@ namespace MNA_labs.ViewModel
             Log7 = new ObservableCollection<string>();
             Log8 = new ObservableCollection<string>();
             Log9 = new ObservableCollection<string>();
+            Log10 = new ObservableCollection<string>();
             InputFile = Directory.GetCurrentDirectory() + @"\lab1.in";
             OutputFile = Directory.GetCurrentDirectory() + @"\lab1.out";
             A = 2.65804;
@@ -359,6 +431,13 @@ namespace MNA_labs.ViewModel
             A9 = 1.1;
             M9 = 2.0;
             Eps9 = 0.001;
+            Left10 = 0;
+            Right10 = 1;
+            Y010 = 0;
+            Y110 = 0.034722;
+            A10 = 1.1;
+            M10 = 2.0;
+            Eps10 = 0.001;
         }
 
         #endregion
@@ -528,6 +607,11 @@ namespace MNA_labs.ViewModel
         public ICommand EilerMethodChoosen
         {
             get { return new RelayCommand(EilerMehodChoosenExecute); }
+        }
+
+        public ICommand DoAction10
+        {
+            get { return new RelayCommand(DoAction10Execute); }
         }
 
         #endregion
@@ -991,7 +1075,7 @@ namespace MNA_labs.ViewModel
                     Right9.ToString("F6", CultureInfo.InvariantCulture), ChoosenMethod9));
                 Log9.Add(string.Format("y'(x) = {0}*(1 - y^2)/((1 + {1})x^2 + y^2 + 1)",
                     A9.ToString("F6", CultureInfo.InvariantCulture), M9.ToString("F6", CultureInfo.InvariantCulture)));
-                Log9.Add(string.Format("y(0) = {0}", Y09.ToString("F6", CultureInfo.InvariantCulture)));
+                Log9.Add(string.Format("y0 = {0}", Y09.ToString("F6", CultureInfo.InvariantCulture)));
                 var xVector = new DoubleVector();
                 var yVector = new DoubleVector();
                 switch (ChoosenMethod9)
@@ -1017,7 +1101,38 @@ namespace MNA_labs.ViewModel
             }
             catch (Exception e)
             {
-                Log8.Add(e.Message);
+                Log9.Add(e.Message);
+            }
+        }
+
+        public void DoAction10Execute()
+        {
+            Log10.Clear();
+            try
+            {
+                Log10.Add(string.Format("Solving differential equation with Adams method on interval [{0}; {1}]",
+                    Left10.ToString("F6", CultureInfo.InvariantCulture),
+                    Right10.ToString("F6", CultureInfo.InvariantCulture)));
+                Log10.Add(string.Format("y'(x) = {0}*(1 - y^2)/((1 + {1})x^2 + y^2 + 1)",
+                    A10.ToString("F6", CultureInfo.InvariantCulture), M10.ToString("F6", CultureInfo.InvariantCulture)));
+                Log10.Add(string.Format("y0 = {0}", Y010.ToString("F6", CultureInfo.InvariantCulture)));
+                DoubleVector xVector, yVector;
+                Kindruk.lab10.DeSolver.AdamsMethod(Left10, Right10, Eps10,
+                    (x, y) => A10*(1 - y*y)/((1 + M10)*x*x + y*y + 1),
+                    out xVector, out yVector, Y010, Y110);
+                foreach (
+                    var item in
+                        xVector.Select(
+                            (x, i) =>
+                                string.Format("x = {0}; y = {1}", x.ToString("F6", CultureInfo.InvariantCulture),
+                                    yVector[i].ToString("F6", CultureInfo.InvariantCulture))))
+                {
+                    Log10.Add(item);
+                }
+            }
+            catch (Exception e)
+            {
+                Log10.Add(e.Message);
             }
         }
 

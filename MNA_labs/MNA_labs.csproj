@@ -101,6 +101,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kindruk.lab10\Kindruk.lab10.csproj">
+      <Project>{1309f882-4feb-4b4f-9214-43f4e2d8161a}</Project>
+      <Name>Kindruk.lab10</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kindruk.lab1\Kindruk.lab1.csproj">
       <Project>{0e0445ee-23e0-458d-8570-ec20ae01de37}</Project>
       <Name>Kindruk.lab1</Name>

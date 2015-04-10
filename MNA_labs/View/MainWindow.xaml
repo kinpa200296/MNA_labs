@@ -461,5 +461,62 @@
                              Content="Метод Эйлера"/>
             </Grid>
         </TabItem>
+        <TabItem Header="Лабораторная 10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Row="5" Grid.Column="0" 
+                         Grid.ColumnSpan="2"
+                         ItemsSource="{Binding Log10}"/>
+                <DockPanel Grid.Row="0" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Левый конец отрезка: "/>
+                    <TextBox Text="{Binding Left10}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Правый конец отрезка: "/>
+                    <TextBox Text="{Binding Right10}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="2" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="Точность интегрирования: "/>
+                    <TextBox Text="{Binding Eps10}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="3" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="a: "/>
+                    <TextBox Text="{Binding A10}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="4" Grid.Column="0" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="m: "/>
+                    <TextBox Text="{Binding M10}"/>
+                </DockPanel>
+                <Button Grid.Row="4" Grid.Column="1"
+                        Content="Выполнить" Margin="5"
+                        Command="{Binding DoAction10}"/>
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="y0: "/>
+                    <TextBox Text="{Binding Y010}"/>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="1" Margin="5"
+                           VerticalAlignment="Center">
+                    <TextBlock Text="y1: "/>
+                    <TextBox Text="{Binding Y110}"/>
+                </DockPanel>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

@@ -48,6 +48,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kindruk.lab10\Kindruk.lab10.csproj">
+      <Project>{1309f882-4feb-4b4f-9214-43f4e2d8161a}</Project>
+      <Name>Kindruk.lab10</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kindruk.lab1\Kindruk.lab1.csproj">
       <Project>{0e0445ee-23e0-458d-8570-ec20ae01de37}</Project>
       <Name>Kindruk.lab1</Name>
@@ -75,6 +79,14 @@
     <ProjectReference Include="..\Kindruk.lab7\Kindruk.lab7.csproj">
       <Project>{d67cfdfa-ae7f-42e4-b215-df09ddbe75d2}</Project>
       <Name>Kindruk.lab7</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kindruk.lab8\Kindruk.lab8.csproj">
+      <Project>{5fcfc4b2-76ba-41f6-9597-c228769e3d0e}</Project>
+      <Name>Kindruk.lab8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kindruk.lab9\Kindruk.lab9.csproj">
+      <Project>{ae6ea9a7-debb-478c-b736-9e182f6c7257}</Project>
+      <Name>Kindruk.lab9</Name>
     </ProjectReference>
     <ProjectReference Include="..\MathBase\MathBase.csproj">
       <Project>{33be65e5-0cbf-4a46-af6b-9fe08a84685f}</Project>
